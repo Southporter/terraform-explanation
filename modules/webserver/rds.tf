@@ -1,5 +1,4 @@
 
-
 resource "aws_security_group" "rds_security" {
   name        = "${var.server_name}-rds-security-group"
   description = "Allow mysql port connections ingress. Allow egress on all ports."
@@ -60,5 +59,8 @@ resource "aws_rds_cluster" "webserver_database_cluster" {
 }
 
 resource "aws_rds_cluster_instance" "webserver_database_cluster" {
-  
+  count              = 1
+  identifier         = "${var.server_name}-rds-instance"
+  cluster_identifier = "${aws_rds_cluster.webserver_database_cluster.id}"
+  instance_class     = var.db_instance
 }

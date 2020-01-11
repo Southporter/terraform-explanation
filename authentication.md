@@ -1,0 +1,3 @@
+# AWS Provider Authentication
+
+This [documentation](https://www.terraform.io/docs/providers/aws/index.html) is a good resource for figuring out your specific case. From my experience, using the environment variables is fine, but only if there is one set of credentials you want to use. If you have multiple accounts or multiple roles, I would suggest using profiles. This way you can have separate `tfvars`  for each environment that can switch the profile for you.

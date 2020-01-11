@@ -21,9 +21,21 @@ data "aws_ami" "ami_latest" {
     values = ["hvm"]
   }
 }
+
+data "template_file" "user_data" {
+  template = "${file("${path.module}/user-data.sh")}"
+  vars {
+    db_url = aws_rds_cluster.webserver_database_cluster.endpoint
+  }
+
+  depends_on = [aws_rds_cluster.webserver_database_cluster]
+}
+
 resource "aws_instance" "webserver" {
   ami           = data.aws_ami.ami_latest.id
   instance_type = var.instance_type
+
+  user_data = "${data.template_file.user_data.renderer}"
 
   tags = merge(var.tags, {
     "Name" = var.server_name
