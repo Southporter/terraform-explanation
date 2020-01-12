@@ -1,0 +1,20 @@
+[
+	{
+		"name": "${name}",
+		"image": "${image}",
+		"command": "${command}",
+		"portMappings": [
+			{
+				"containerPort": "${containerHttpPort}",
+				"hostPort": "${hostHttpPort}",
+				"protocol": "tcp"
+			},
+			{
+				"containerPort": "${containerHttpsPort}",
+				"hostPort": "${hostHttpsPort}",
+				"protocol": "tcp"
+			}
+		]
+	}
+]
+
