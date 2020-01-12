@@ -24,7 +24,7 @@ data "aws_ami" "ami_latest" {
 
 data "template_file" "user_data" {
   template = "${file("${path.module}/user-data.sh")}"
-  vars {
+  vars = {
     db_url = aws_rds_cluster.webserver_database_cluster.endpoint
   }
 
@@ -35,11 +35,11 @@ resource "aws_instance" "webserver" {
   ami           = data.aws_ami.ami_latest.id
   instance_type = var.instance_type
 
-  user_data = "${data.template_file.user_data.renderer}"
+  user_data = "${data.template_file.user_data.rendered}"
 
   tags = merge(var.tags, {
     "Name" = var.server_name
-  }
+  })
 }
 
 resource "aws_security_group" "web_ingress" {
@@ -50,19 +50,19 @@ resource "aws_security_group" "web_ingress" {
   ingress {
     from_port = 22
     to_port   = 22
-    protoco   = "tcp"
+    protocol  = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
     from_port = 80
     to_port   = 80
-    protoco   = "tcp"
+    protocol  = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
     from_port = 443
     to_port   = 443
-    protoco   = "tcp"
+    protocol  = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
